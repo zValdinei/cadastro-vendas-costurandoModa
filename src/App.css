@@ -36,3 +36,40 @@
     transform: rotate(360deg);
   }
 }
+
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #a0a0a0;
+  padding: 20px;
+  font-size: large;
+}
+h2 {
+  text-align: center;
+}
+form {
+  font-size: 30px;
+  background-color: #ffffff;
+  padding: 50px;
+  border-radius: 20px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+label, select, input {
+  font-size: 20px;
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+}
+input[type="submit"] {
+  background-color: #00c0fa;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+input[type="submit"]:hover {
+  background-color: #fd8c0a;
+}
