@@ -1,17 +1,21 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const App = () => {
-  // Estado inicial que armazena os dados digitados pelo usuário
   const [formData, setFormData] = useState({
-    tipo:'concerto',
+    tipo: 'concerto',
     valor: '',
   });
 
-  // Estado que armazena todos os dados enviados
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(() => {
+    const savedData = localStorage.getItem('dadosVendas');
+    return savedData ? JSON.parse(savedData) : [];
+  });
+  
+  useEffect(() => {
+    localStorage.setItem('dadosVendas', JSON.stringify(data));
+  }, [data]);
 
-  // Função para atualizar os valores do formulário conforme o usuário digita
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -20,26 +24,24 @@ const App = () => {
     });
   };
 
-  // Função para enviar os dados e armazená-los na lista
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const valor = parseFloat(formData.valor);
-      if (isNaN(valor)|| valor<=0){
-        alert('Por favor, digite um valor valido maior que zero!')
-        return;
-      }
-  
+    if (isNaN(valor) || valor <= 0) {
+      alert('Por favor, digite um valor válido maior que zero!');
+      return;
+    }
+
     const newEntry = {
       tipo: formData.tipo,
-      valor: valor.toFixed(2)
+      valor: valor.toFixed(2),
     };
-    
+
     setData([...data, newEntry]);
     setFormData({ tipo: 'concerto', valor: '' });
   };
 
-  // Função para exportar os dados para um arquivo CSV
   const handleDownloadCSV = () => {
     const csvContent = [
       ['Tipo', 'Valor'],
@@ -63,27 +65,27 @@ const App = () => {
     <div>
       <h2>CADASTRO DE VENDAS</h2>
       <form id="formVenda" onSubmit={handleSubmit}>
-        <label htmlfor="tipo">Selecione o Tipo:</label>
+        <label htmlFor="tipo">Selecione o Tipo:</label>
         <select name="tipo" id="tipo" value={formData.tipo} onChange={handleChange} required>
-            <option value='concerto'>Conserto</option>
-            <option value='encomenda'>Encomenda</option>
+          <option value='concerto'>Conserto</option>
+          <option value='encomenda'>Encomenda</option>
         </select>
 
-        <label for="valor">Valor:</label>
-        <input 
-          type="number" 
-          name="valor" 
-          id="valor" 
-          placeholder="Digite o valor" 
-          step="0.01" 
-          min="0" 
+        <label htmlFor="valor">Valor:</label>
+        <input
+          type="number"
+          name="valor"
+          id="valor"
+          placeholder="Digite o valor"
+          step="0.01"
+          min="0"
           value={formData.valor}
           onChange={handleChange}
-          required/>
+          required
+        />
 
-        <input type="submit" value="Enviar"/>
+        <input type="submit" value="Enviar" />
       </form>
-
 
       {data.length > 0 && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
